@@ -3,6 +3,8 @@ package com.Exercise.GroceryStore.Controllers;
 import com.Exercise.GroceryStore.DTO.ItemDto;
 import com.Exercise.GroceryStore.Entities.*;
 import com.Exercise.GroceryStore.Services.ItemService;
+import com.Exercise.GroceryStore.Services.PromotionService;
+import com.Exercise.GroceryStore.Utility.SupportedProducts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +21,8 @@ public class AdminPanelController {
     @Autowired
     ItemService itemService;
 
+    @Autowired
+    PromotionService promotionService;
 
 
     //Add Item to inventory
@@ -59,22 +63,40 @@ public class AdminPanelController {
         }
 
 
-    //Two-for-one promotion
-    @PostMapping("/2for3/{category}")
-    public ResponseEntity<String> promoteCategory(@PathVariable(name = "category") String category){
+    //Two-for-one promotion on a specific category
+    @PostMapping("/promotion")
+    public ResponseEntity<String> addPromotion(@RequestBody Promotion promotion){
+
         //Check if category is a supported one
-        if(!SupportedProducts.productList.containsKey(category)){
-            ResponseEntity.badRequest()
+        if(!SupportedProducts.productList.containsValue(promotion.getPromotedCategory())){
+          return ResponseEntity.badRequest()
                     .body("Unsupported category!");
         }
 
+        //Check if the promotion type is supported
+        if(!promotion.getPromotionType().equals("2for3") && !promotion.getPromotionType().equals("buy1get1")){
+            return ResponseEntity.badRequest()
+                    .body("Unsupported promotion type!");
+        }
+
+        //Clear previous promotion and instantiate new one
+        promotionService.deleteAll();
+        Promotion newPromotion = new Promotion();
+        newPromotion.setPromotedCategory(promotion.getPromotedCategory());
+        newPromotion.setPromotionType(promotion.getPromotionType());
+
+        promotionService.savePromotion(newPromotion);
 
 
-
-        return ResponseEntity.ok("");
+        return ResponseEntity.ok("Promotion created!");
     }
 
-    //Fetch all from repo
+    @GetMapping("/promotion")
+    public ResponseEntity<List<Promotion>>  getPromotion(){
+        return ResponseEntity.ok(promotionService.getAll());
+    }
+
+    //Fetch all items that are currently listed
     @GetMapping("/inventory")
     public ResponseEntity<List<Item>> getInventory( ) {
         return ResponseEntity.ok(itemService.getAll());

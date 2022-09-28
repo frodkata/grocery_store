@@ -5,6 +5,7 @@ import com.Exercise.GroceryStore.Entities.Item;
 import com.Exercise.GroceryStore.DTO.ItemDto;
 import com.Exercise.GroceryStore.Services.CartService;
 import com.Exercise.GroceryStore.Services.ItemService;
+import com.Exercise.GroceryStore.Services.PromotionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,9 @@ public class UserPanelController {
 
     @Autowired
     ItemService itemService;
+
+    @Autowired
+    PromotionService promotionService;
 
     //Fetch all available products
     @GetMapping("/products")
@@ -69,11 +73,15 @@ public class UserPanelController {
                     .body("Cart is empty!");
         }
 
-        //Calculate total price of items in cart
+
         Double totalPrice = 0.0;
-        for (Item i:cartService.getCart().getItems()) {
-            totalPrice += i.getItemPrice();
-        }
+
+
+        //Calculate total price based on cart, promo type and promo category
+        totalPrice = promotionService.calculatePriceByPromotion(
+                cartService.getCart(),
+                promotionService.getPromotionById(1L).getPromotionType(),
+                promotionService.getPromotionById(1L).getPromotedCategory());
 
 
         //Remove bought items from repository
