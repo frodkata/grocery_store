@@ -1,4 +1,4 @@
-package com.Exercise.GroceryStore.Entities;
+package com.Exercise.GroceryStore.DTO;
 
 import com.sun.istack.NotNull;
 import org.springframework.validation.annotation.Validated;

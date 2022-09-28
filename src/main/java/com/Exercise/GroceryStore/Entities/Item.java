@@ -1,5 +1,6 @@
 package com.Exercise.GroceryStore.Entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.sun.istack.NotNull;
 import org.springframework.validation.annotation.Validated;
 
@@ -28,6 +29,11 @@ public class Item {
     @Column(name = "price")
     @NotNull
     private Double itemPrice;
+
+    @ManyToOne
+    @JsonBackReference
+    @JoinColumn(name="cart_id")
+    private Cart cart;
 
     public Item() {
     }
@@ -71,5 +77,13 @@ public class Item {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Cart getCart() {
+        return cart;
+    }
+
+    public void setCart(Cart cart) {
+        this.cart = cart;
     }
 }

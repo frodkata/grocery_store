@@ -1,14 +1,13 @@
 package com.Exercise.GroceryStore.Controllers;
 
+import com.Exercise.GroceryStore.DTO.ItemDto;
 import com.Exercise.GroceryStore.Entities.*;
 import com.Exercise.GroceryStore.Services.ItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,7 +22,7 @@ public class AdminPanelController {
 
 
     //Add Item to inventory
-    @PostMapping("/addItem")
+    @PostMapping("/inventory")
     public ResponseEntity<String> addQuestion(@Valid @RequestBody ItemDto item) {
 
         //Object to be added to the repository
@@ -60,7 +59,23 @@ public class AdminPanelController {
         }
 
 
-    @GetMapping("/getInventory")
+    //Two-for-one promotion
+    @PostMapping("/2for3/{category}")
+    public ResponseEntity<String> promoteCategory(@PathVariable(name = "category") String category){
+        //Check if category is a supported one
+        if(!SupportedProducts.productList.containsKey(category)){
+            ResponseEntity.badRequest()
+                    .body("Unsupported category!");
+        }
+
+
+
+
+        return ResponseEntity.ok("");
+    }
+
+    //Fetch all from repo
+    @GetMapping("/inventory")
     public ResponseEntity<List<Item>> getInventory( ) {
         return ResponseEntity.ok(itemService.getAll());
     }
