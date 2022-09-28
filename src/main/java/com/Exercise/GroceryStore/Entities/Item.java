@@ -14,6 +14,11 @@ public class Item {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
 
+    @Column(name = "name")
+    @NotNull
+    @NotBlank(message = "Name is mandatory")
+    private String name;
+
 
     @Column(name = "description")
     @NotNull
@@ -27,8 +32,9 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long id, String itemDescription, Double itemPrice) {
+    public Item(Long id, @NotBlank(message = "Name is mandatory") String name, @NotBlank(message = "Description is mandatory") String itemDescription, Double itemPrice) {
         this.id = id;
+        this.name = name;
         this.itemDescription = itemDescription;
         this.itemPrice = itemPrice;
     }
@@ -57,5 +63,13 @@ public class Item {
 
     public void setItemPrice(Double itemPrice) {
         this.itemPrice = itemPrice;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 }
