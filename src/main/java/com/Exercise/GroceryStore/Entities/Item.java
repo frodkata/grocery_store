@@ -1,7 +1,12 @@
 package com.Exercise.GroceryStore.Entities;
 
-import javax.persistence.*;
+import com.sun.istack.NotNull;
+import org.springframework.validation.annotation.Validated;
 
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+
+@Validated
 @Entity
 @Table(name = "items")
 public class Item {
@@ -11,10 +16,16 @@ public class Item {
 
 
     @Column(name = "description")
+    @NotNull
+    @NotBlank(message = "Description is mandatory")
     private String itemDescription;
 
     @Column(name = "price")
+    @NotNull
     private Double itemPrice;
+
+    public Item() {
+    }
 
     public Item(Long id, String itemDescription, Double itemPrice) {
         this.id = id;
