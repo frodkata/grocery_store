@@ -37,12 +37,20 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     //Configure API endpoints and secured them based on roles
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.
-                httpBasic()
+        //Disable csrf and cors for postman testing
+        http.cors()
+                .and()
+                .csrf().disable()
+       //Disable this for the in-memory DB UI
+                .headers().frameOptions().disable()
+                .and()
+        //Configure endpoints
+        .httpBasic()
                 .and()
                 .authorizeRequests()
-                .antMatchers("/helloAdmin").hasRole("ADMIN")
-                .antMatchers("/helloUser").hasAnyRole("USER","ADMIN")
+                .antMatchers("/api/admin/**").hasRole("ADMIN")
+                .antMatchers("/api/user/**").hasAnyRole("ADMIN", "USER")
+                .antMatchers("/login").permitAll()
                 .and()
                 .formLogin();
     }
