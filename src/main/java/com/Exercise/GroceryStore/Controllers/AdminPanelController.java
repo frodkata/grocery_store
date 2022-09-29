@@ -1,15 +1,17 @@
 package com.Exercise.GroceryStore.Controllers;
 
 import com.Exercise.GroceryStore.DTO.ItemDto;
+import com.Exercise.GroceryStore.DTO.ProductDto;
 import com.Exercise.GroceryStore.Entities.*;
 import com.Exercise.GroceryStore.Services.ItemService;
 import com.Exercise.GroceryStore.Services.PromotionService;
-import com.Exercise.GroceryStore.Utility.SupportedProducts;
+import com.Exercise.GroceryStore.Services.SupportedProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -24,27 +26,44 @@ public class AdminPanelController {
     @Autowired
     PromotionService promotionService;
 
+    @Autowired
+    SupportedProductsService productsService;
+
+    @PostMapping("/inventory/new")
+    public ResponseEntity<String> createNewProduct(@Valid @RequestBody ProductDto product) {
+        SupportedProducts newProduct = new SupportedProducts();
+
+        //Check if item already exists in supported list
+        if(productsService.isSupportedItem(product.getItemName())){
+            return ResponseEntity.badRequest()
+                    .body("Item is already supported!");
+        }
+
+        newProduct.setName(product.getItemName());
+        newProduct.setType(product.getItemType());
+        productsService.saveProduct(newProduct);
+        return ResponseEntity.ok("Added " + newProduct.getName());
+    }
 
     //Add Item to inventory
     @PostMapping("/inventory")
-    public ResponseEntity<String> addQuestion(@Valid @RequestBody ItemDto item) {
+    public ResponseEntity<String> addItem(@Valid @RequestBody ItemDto item) {
 
         //Object to be added to the repository
         Item newItem = new Item();
 
 
-        //Check if item name is in the supported product map
-        if(SupportedProducts.productList.containsKey(item.itemName)){
+
+        //Check if item is supported
+        if(productsService.isSupportedItem(item.getItemName())){
             newItem.setName(item.getItemName());
 
-            //Assign corresponding key(product category) as the product description
-            newItem.setItemDescription(SupportedProducts.productList.get(item.getItemName()));
+            //Assign corresponding type to name ex.[Apple - Fruit]
+            newItem.setType(productsService.fetchProductByName(item.itemName).getType());
         }else{
-            return ResponseEntity.badRequest()
-                    .body("Unsupported item type! \n Supported items: "
-                            + Arrays.toString(SupportedProducts.productList.keySet().toArray()));
-
-
+            System.out.println(productsService.getAll());
+           return ResponseEntity.badRequest()
+                    .body("Item is not supported! Currently supported items: " + productsService.getAll().toString() );
         }
 
         //Confirm that price is valid
@@ -68,8 +87,8 @@ public class AdminPanelController {
     public ResponseEntity<String> addPromotion(@RequestBody Promotion promotion){
 
         //Check if category is a supported one
-        if(!SupportedProducts.productList.containsValue(promotion.getPromotedCategory())){
-          return ResponseEntity.badRequest()
+        if(!productsService.isSupportedCategory(promotion.getPromotedCategory())){
+            return ResponseEntity.badRequest()
                     .body("Unsupported category!");
         }
 
