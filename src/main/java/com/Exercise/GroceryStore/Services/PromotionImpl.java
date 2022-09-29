@@ -86,7 +86,7 @@ public class PromotionImpl implements PromotionService {
             int countItem = 0;
             for (Item i:cart.getItems()) {
                 //Whenever an item that matches promotion category is detected, count one
-                if(i.getItemDescription().equals(promoCategory)){
+                if(i.getType().equals(promoCategory)){
                     countItem++;
                 }
                 //The moment a second item of the same category is detected, reduce 50%

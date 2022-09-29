@@ -1,29 +1,62 @@
 package com.Exercise.GroceryStore.Entities;
 
-import org.springframework.context.annotation.Bean;
+import javax.persistence.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
-
+@Entity
+@Table(name = "supportedProducts")
 public class SupportedProducts {
+    @Id
+    @GeneratedValue(strategy =  GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(name = "type")
+    private String type;
+
+    @Column(name = "name")
+    private String name;
 
 
-    public static Map<String, String> productList = new HashMap<String, String>() {{
-        //Supported fruits
-        put("Apple", "Fruit");
-        put("Orange", "Fruit");
-        put("Watermelon", "Fruit");
-        put("Mango", "Fruit");
-        put("Avocado", "Fruit");
 
-        //Supported vegetables
-        put("Onion", "Vegetable");
-        put("Tomato", "Vegetable");
-        put("Potato", "Vegetable");
-        put("Broccoli", "Vegetable");
-        put("Cucumber", "Vegetable");
-    }};
+    public SupportedProducts() {
+    }
 
+    public SupportedProducts(String type, String name) {
+        this.type = type;
+        this.name = name;
+    }
 
+    public SupportedProducts(Long id, String type, String name) {
+        this.id = id;
+        this.type = type;
+        this.name = name;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    @Override
+    public String toString(){
+        return this.name + " (" + this.type + ")";
+    }
 }
