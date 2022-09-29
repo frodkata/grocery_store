@@ -80,8 +80,8 @@ public class UserPanelController {
         //Calculate total price based on cart, promo type and promo category
         totalPrice = promotionService.calculatePriceByPromotion(
                 cartService.getCart(),
-                promotionService.getPromotionById(1L).getPromotionType(),
-                promotionService.getPromotionById(1L).getPromotedCategory());
+                promotionService.getPromotion().getPromotionType(),
+                promotionService.getPromotion().getPromotedCategory());
 
 
         //Remove bought items from repository

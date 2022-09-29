@@ -24,17 +24,16 @@ public class CartServiceImpl implements CartService {
         return cartRepository.save(cart);
     }
 
-    //Since there are no user entities and only one user, there is only one cart instance
+    //Since only one cart exists at any given time, return last saved one
     @Override
     public Cart getCart() {
-
-        Optional<Cart> optional = cartRepository.findById(1L);
-        Cart cart = null;
-        if (optional.isPresent()) {
-            cart = optional.get();
+        if(cartRepository.findAll().isEmpty()){
+            return new Cart();
         }
 
-        return cart;
+        return cartRepository.findAll().get(
+                cartRepository.findAll().size()-1
+        );
     }
 
     @Override

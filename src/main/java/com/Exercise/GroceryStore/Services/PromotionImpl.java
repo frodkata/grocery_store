@@ -16,9 +16,16 @@ public class PromotionImpl implements PromotionService {
     @Autowired
     PromotionRepository promotionRepository;
 
+
     @Override
-    public List<Promotion> getAll() {
-        return promotionRepository.findAll();
+    public Promotion getPromotion() {
+        if(promotionRepository.findAll().isEmpty()){
+            return new Promotion();
+        }
+        //Since only one promotion exists at any time, return last saved promotion
+        return promotionRepository.findAll().get(
+                promotionRepository.findAll().size()-1
+        );
     }
 
     @Override
@@ -75,7 +82,7 @@ public class PromotionImpl implements PromotionService {
             totalPrice -= lowest;
         }
         else if(promoType.equals(("buy1get1"))){
-            //Helper variable to count for the number of items of same type
+            //Helper variable to count the number of items of same type
             int countItem = 0;
             for (Item i:cart.getItems()) {
                 //Whenever an item that matches promotion category is detected, count one

@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service
 public interface PromotionService {
-    List<Promotion> getAll();
+    Promotion getPromotion();
     Promotion savePromotion(Promotion promotion);
     Promotion getPromotionById(Long id);
     void deletePromotionById(Long id);

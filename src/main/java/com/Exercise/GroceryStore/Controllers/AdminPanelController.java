@@ -92,8 +92,8 @@ public class AdminPanelController {
     }
 
     @GetMapping("/promotion")
-    public ResponseEntity<List<Promotion>>  getPromotion(){
-        return ResponseEntity.ok(promotionService.getAll());
+    public ResponseEntity<Promotion> getPromotion(){
+        return ResponseEntity.ok(promotionService.getPromotion());
     }
 
     //Fetch all items that are currently listed
