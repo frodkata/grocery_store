@@ -48,7 +48,7 @@ public class SupportedProductsServiceImpl implements SupportedProductsService {
 
         //Fetch only products that are of the same type as requested
         for (SupportedProducts product : supportedProductsRepository.findAll()) {
-            if (product.getType().equals(type)) {
+            if (product.getType().toUpperCase().equals(type.toUpperCase())) {
                 productList.add(product);
             }
         }
@@ -65,7 +65,7 @@ public class SupportedProductsServiceImpl implements SupportedProductsService {
     public SupportedProducts fetchProductByName(String name) {
         //Fetch only products that are of the same type as requested
         for (SupportedProducts product : supportedProductsRepository.findAll()) {
-            if (product.getName().equals(name)) {
+            if (product.getName().toUpperCase().equals(name.toUpperCase())) {
                 return product;
             }
         }
@@ -76,7 +76,7 @@ public class SupportedProductsServiceImpl implements SupportedProductsService {
     @Override
     public Boolean isSupportedItem(String itemName) {
         for (SupportedProducts product : supportedProductsRepository.findAll()) {
-            if (product.getName().equals(itemName)) {
+            if (product.getName().toUpperCase().equals(itemName.toUpperCase())) {
                 return true;
             }
 
@@ -87,7 +87,7 @@ public class SupportedProductsServiceImpl implements SupportedProductsService {
     @Override
     public Boolean isSupportedCategory(String category) {
         for (SupportedProducts product : supportedProductsRepository.findAll()) {
-            if (product.getType().equals(category)) {
+            if (product.getType().toUpperCase().equals(category.toUpperCase())) {
                 return true;
             }
 

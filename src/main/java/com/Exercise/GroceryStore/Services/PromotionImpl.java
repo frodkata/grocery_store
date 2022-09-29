@@ -20,7 +20,7 @@ public class PromotionImpl implements PromotionService {
     @Override
     public Promotion getPromotion() {
         if(promotionRepository.findAll().isEmpty()){
-            return new Promotion();
+            return new Promotion("No category", "No type");
         }
         //Since only one promotion exists at any time, return last saved promotion
         return promotionRepository.findAll().get(
@@ -67,7 +67,7 @@ public class PromotionImpl implements PromotionService {
 
 
         //customer buys 3 items but only pays for the value of 2 of them, the cheapest one is free
-        if(promoType.equals("2for3") && cart.getItems().size() >= 2){
+        if(promoType!=null && promoType.equals("2for3") && cart.getItems().size() >= 2){
             //assume first one is lowest
             double lowest = cart.getItems().get(0).getItemPrice();
 
@@ -81,7 +81,7 @@ public class PromotionImpl implements PromotionService {
 
             totalPrice -= lowest;
         }
-        else if(promoType.equals(("buy1get1"))){
+        else if(promoType!=null && promoType.equals(("buy1get1"))){
             //Helper variable to count the number of items of same type
             int countItem = 0;
             for (Item i:cart.getItems()) {

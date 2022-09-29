@@ -21,10 +21,10 @@ public class Item {
     private String name;
 
 
-    @Column(name = "description")
+    @Column(name = "type")
     @NotNull
-    @NotBlank(message = "Description is mandatory")
-    private String itemDescription;
+    @NotBlank(message = "Type is mandatory")
+    private String type;
 
     @Column(name = "price")
     @NotNull
@@ -38,11 +38,12 @@ public class Item {
     public Item() {
     }
 
-    public Item(Long id, @NotBlank(message = "Name is mandatory") String name, @NotBlank(message = "Description is mandatory") String itemDescription, Double itemPrice) {
+    public Item(Long id, @NotBlank(message = "Name is mandatory") String name, @NotBlank(message = "Type is mandatory") String type, Double itemPrice, Cart cart) {
         this.id = id;
         this.name = name;
-        this.itemDescription = itemDescription;
+        this.type = type;
         this.itemPrice = itemPrice;
+        this.cart = cart;
     }
 
     public Long getId() {
@@ -54,14 +55,14 @@ public class Item {
     }
 
 
-
-    public String getItemDescription() {
-        return itemDescription;
+    public String getType() {
+        return type;
     }
 
-    public void setItemDescription(String itemDescription) {
-        this.itemDescription = itemDescription;
+    public void setType(String type) {
+        this.type = type;
     }
+
 
     public Double getItemPrice() {
         return itemPrice;

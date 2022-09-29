@@ -15,6 +15,14 @@ public class Promotion {
     @Column(name = "type")
     private String promotionType;
 
+    public Promotion() {
+    }
+
+    public Promotion(String promotedCategory, String promotionType) {
+        this.promotedCategory = promotedCategory;
+        this.promotionType = promotionType;
+    }
+
     public String getPromotedCategory() {
         return promotedCategory;
     }
