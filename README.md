@@ -183,7 +183,6 @@ Ex.
 ```http
   GET http://localhost:8080/api/products/fruit
 ```
-With the items above + **2for1** and **buy1get1**, total price is:
 
 ```json
 [
