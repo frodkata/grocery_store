@@ -78,12 +78,12 @@ public class UserPanelController {
         //Calculate total price based on cart, promo type and promo category
         double totalPrice = promotionService.calculatePriceByPromotion(cartService.getCart());
 
-/*
+
         //Remove bought items from repository
         for (Item i: cartService.getCart().getItems()) {
             itemService.deleteItemById(i.getId());
         }
-*/
+
         String prettyResult = String.format("%.2f", totalPrice);
         return  ResponseEntity.ok("Total price of products: " + prettyResult);
     }
