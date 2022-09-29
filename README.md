@@ -332,7 +332,7 @@ Ex.
 ```http
   GET http://localhost:8080/api/checkout
 ```
-With the items above + **2for1** and **buy1get1**, total price is:
+With the items above + **2for3** and **buy1get1**, total price is:
 
 ```json
 Total price of products: 1.99
