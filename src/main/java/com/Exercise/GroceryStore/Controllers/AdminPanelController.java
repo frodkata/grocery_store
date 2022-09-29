@@ -99,6 +99,12 @@ public class AdminPanelController {
                     .body("Unsupported promotion type! Should be either 2for3 or buy1get1");
         }
 
+        //Check if a promotion of said type already exists
+        if(promotionService.getPromotionByType(promotionDto.getPromotionType()) != null){
+            return ResponseEntity.badRequest()
+                    .body("A promotion of " + promotionDto.getPromotionType() + " already exists!");
+        }
+
 
         promotionService.savePromotion(new Promotion("No Category", promotionDto.getPromotionType(), promotionDto.getProductNames()));
 
