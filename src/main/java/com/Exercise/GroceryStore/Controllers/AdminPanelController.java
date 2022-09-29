@@ -82,7 +82,7 @@ public class AdminPanelController {
         }
 
     //Create promotion on specific items
-    @PostMapping("/promotions/items")
+    @PostMapping("/promotion")
     public ResponseEntity<String> addPromotionByItems(@RequestBody PromotionDto promotionDto){
 
         //Check if item is supported
