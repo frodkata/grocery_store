@@ -5,6 +5,7 @@ import com.Exercise.GroceryStore.Repositories.ItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +34,18 @@ public class ItemServiceImpl implements ItemService {
         }
 
         return item;
+    }
+
+    @Override
+    public List<Item> getByCategory(String type) {
+        List<Item> itemList = new ArrayList<>();
+        for (Item item:itemRepository.findAll()) {
+            if(item.getType().toUpperCase().equals(type.toUpperCase())){
+                itemList.add(item);
+            }
+        }
+
+        return itemList;
     }
 
     @Override

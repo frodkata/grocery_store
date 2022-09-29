@@ -31,6 +31,12 @@ public class UserPanelController {
         return ResponseEntity.ok(itemService.getAll()) ;
     }
 
+    //Fetch items based on category
+    @GetMapping("/products/{category}")
+    public ResponseEntity<List<Item>> getByCategory(@PathVariable(name = "category") String category) {
+        return ResponseEntity.ok(itemService.getByCategory(category));
+    }
+
     //Fetch products in cart
     @GetMapping("/cart")
     public ResponseEntity<List<Item>> getCartProducts(){
