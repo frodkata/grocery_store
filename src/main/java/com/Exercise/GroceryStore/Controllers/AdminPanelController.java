@@ -32,7 +32,6 @@ public class AdminPanelController {
 
     @PostMapping("/inventory/new")
     public ResponseEntity<String> createNewProduct(@Valid @RequestBody ProductDto product) {
-        SupportedProducts newProduct = new SupportedProducts();
 
         //Check if item already exists in supported list
         if(productsService.isSupportedItem(product.getItemName())){
@@ -40,10 +39,9 @@ public class AdminPanelController {
                     .body("Item is already supported!");
         }
 
-        newProduct.setName(product.getItemName());
-        newProduct.setType(product.getItemType());
-        productsService.saveProduct(newProduct);
-        return ResponseEntity.ok("Added " + newProduct.getName());
+
+        productsService.saveProduct(new SupportedProducts(product.getItemName(), product.getItemType()));
+        return ResponseEntity.ok("Added " + product.getItemName());
     }
 
     //Add Item to inventory
@@ -66,6 +64,7 @@ public class AdminPanelController {
            return ResponseEntity.badRequest()
                     .body("Item is not supported! Currently supported items: " + productsService.getAll().toString() );
         }
+
 
         //Confirm that price is valid
         if(item.getItemPrice() == null || item.getItemPrice() <= 0){
@@ -90,73 +89,43 @@ public class AdminPanelController {
         for (String itemName: promotionDto.getProductNames()) {
             if(!productsService.isSupportedItem(itemName)){
                 return ResponseEntity.badRequest()
-                        .body("This item is not in the supported list!");
+                        .body("Item "+ itemName + " is not in the supported list!");
             }
         }
 
-        Promotion newPromotion = new Promotion();
-        List<String> promotedList = new ArrayList<>();
-        promotedList.addAll(promotionDto.getProductNames());
-        newPromotion.setPromotedItemNames(promotedList);
-        newPromotion.setPromotionType(promotionDto.getPromotionType());
-        newPromotion.setPromotedCategory("No category");
+        //Check if promotion is supported
+        if(!promotionDto.getPromotionType().equals("2for3") && !promotionDto.getPromotionType().equals("buy1get1")) {
+            return ResponseEntity.badRequest()
+                    .body("Unsupported promotion type! Should be either 2for3 or buy1get1");
+        }
 
-        promotionService.savePromotion(newPromotion);
+
+        promotionService.savePromotion(new Promotion("No Category", promotionDto.getPromotionType(), promotionDto.getProductNames()));
 
         return ResponseEntity.ok("Promotion Created!");
     }
 
-    //Create promotion on specific category
-    @PostMapping("/promotions/category")
-    public ResponseEntity<String> addPromotionByCategory(@RequestBody Promotion promotion){
 
-        //Check if category is a supported one
-        if(!productsService.isSupportedCategory(promotion.getPromotedCategory())){
-            return ResponseEntity.badRequest()
-                    .body("Unsupported category!");
-        }
-
-        //Check if the promotion type is supported
-        if(!promotion.getPromotionType().equals("2for3") && !promotion.getPromotionType().equals("buy1get1")){
-            return ResponseEntity.badRequest()
-                    .body("Unsupported promotion type!");
-        }
-
-        //When promoting by category, only one promotion of given type and category can exist
-        //Check if other promotions exist
-        if(promotionService.getPromotionByType(promotion.getPromotionType()) != null){
-            return ResponseEntity.badRequest()
-                    .body("Promotion type " + promotion.getPromotionType() + " already exists!");
-        }else if(promotionService.getPromotionByCategory(promotion.getPromotedCategory()) != null){
-            return ResponseEntity.badRequest()
-                    .body("Promotion category " + promotion.getPromotedCategory() + " already exists!");
-        }
-        Promotion newPromotion = new Promotion();
-        newPromotion.setPromotedCategory(promotion.getPromotedCategory());
-        newPromotion.setPromotionType(promotion.getPromotionType());
-
-        promotionService.savePromotion(newPromotion);
-
-
-        return ResponseEntity.ok("Promotion created!");
-    }
-
+    //Get active promotions
     @GetMapping("/promotion")
     public ResponseEntity<List<Promotion>> getPromotion(){
         return ResponseEntity.ok(promotionService.getAll());
     }
 
+
+    //Delete promotion by Type
     @DeleteMapping("/promotion")
     public  ResponseEntity<String> deletePromotion(@RequestBody String promotionType){
-       if(promotionService.getPromotionByType(promotionType) == null){
+
+        //Check if promotion exists
+        if(promotionService.getPromotionByType(promotionType) == null){
            return ResponseEntity.badRequest()
                    .body("Promotion doesn't exist!");
        }
 
+        //Delete promotion from repository
         promotionService.deletePromotionById(
-               promotionService
-                       .getPromotionByType(promotionType)
-                       .getId());
+               promotionService.getPromotionByType(promotionType).getId());
 
        return ResponseEntity.ok("Deleted promotion " + promotionType);
     }

@@ -52,24 +52,21 @@ public class UserPanelController {
             }
 
 
-            //Fetch item from repo and add to cart
+            //Fetch item from repo and add cart
             Item itemToAdd = itemService.getItemById(productId);
-
-
-
-
             itemToAdd.setCart(cart);
             cartService.saveCart(cart);
 
 
 
-            return ResponseEntity.ok("Item" + itemToAdd.getName() + " added to cart!");
+            return ResponseEntity.ok("Item " + itemToAdd.getName() + " added to cart!");
 
     }
 
     //Total price with active promotion is calculated at checkout
     @GetMapping("/checkout")
     public ResponseEntity<String> checkout(){
+
         //Check if cart is empty before checkout
         if(cartService.getCart().getItems().size() <= 0){
             ResponseEntity.badRequest()
@@ -87,8 +84,8 @@ public class UserPanelController {
             itemService.deleteItemById(i.getId());
         }
 */
-
-        return  ResponseEntity.ok("Total price of products: " + totalPrice);
+        String prettyResult = String.format("%.2f", totalPrice);
+        return  ResponseEntity.ok("Total price of products: " + prettyResult);
     }
 
 }
