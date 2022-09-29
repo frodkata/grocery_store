@@ -30,6 +30,12 @@ public class Promotion {
         this.promotionType = promotionType;
     }
 
+    public Promotion(String promotedCategory, String promotionType, List<String> promotedItemNames) {
+        this.promotedCategory = promotedCategory;
+        this.promotionType = promotionType;
+        this.promotedItemNames = promotedItemNames;
+    }
+
     public String getPromotedCategory() {
         return promotedCategory;
     }
