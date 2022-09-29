@@ -242,6 +242,31 @@ Ex.
     },
 ]
 ```
+#### Get by category:
+Fetch items by their respective category passed as a path variable
+
+Ex.
+```http
+  GET http://localhost:8080/api/products/fruit
+```
+
+```json
+[
+{
+        "id": 1,
+        "name": "apple",
+        "type": "fruit",
+        "itemPrice": 0.5
+    },
+    {
+        "id": 2,
+        "name": "banana",
+        "type": "fruit",
+        "itemPrice": 0.4
+    }
+]
+```
+
 
 #### Get items from cart:
 Retrieves items currently in cart
@@ -297,30 +322,7 @@ Ex.
     }
 ]
 ```
-#### Get by category:
-Fetch items by their respective category passed as a path variable
 
-Ex.
-```http
-  GET http://localhost:8080/api/products/fruit
-```
-
-```json
-[
-{
-        "id": 1,
-        "name": "apple",
-        "type": "fruit",
-        "itemPrice": 0.5
-    },
-    {
-        "id": 2,
-        "name": "banana",
-        "type": "fruit",
-        "itemPrice": 0.4
-    }
-]
-```
 
 
 #### Checkout:
