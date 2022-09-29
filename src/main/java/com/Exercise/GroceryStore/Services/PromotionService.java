@@ -8,10 +8,13 @@ import java.util.List;
 
 @Service
 public interface PromotionService {
-    Promotion getPromotion();
+    List<Promotion> getAll();
     Promotion savePromotion(Promotion promotion);
     Promotion getPromotionById(Long id);
     void deletePromotionById(Long id);
     void deleteAll();
-    double calculatePriceByPromotion(Cart cart, String promoType, String promoCategory);
+    Promotion getPromotionByCategory(String categoryName);
+    Promotion getPromotionByType(String promotionType);
+    Boolean checkIfItemIsPromoted(String promotedItem, String promotionType);
+    double calculatePriceByPromotion(Cart cart);
 }

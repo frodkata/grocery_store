@@ -1,8 +1,10 @@
 package com.Exercise.GroceryStore;
 
 import com.Exercise.GroceryStore.Entities.Cart;
+import com.Exercise.GroceryStore.Entities.Item;
 import com.Exercise.GroceryStore.Entities.SupportedProducts;
 import com.Exercise.GroceryStore.Services.CartService;
+import com.Exercise.GroceryStore.Services.ItemService;
 import com.Exercise.GroceryStore.Services.SupportedProductsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +22,9 @@ public class GroceryStoreApplication {
 	@Autowired
 	SupportedProductsService productsService;
 
+	@Autowired
+	ItemService itemService;
+
 	public static void main(String[] args) {
 		SpringApplication.run(GroceryStoreApplication.class, args);
 	}
@@ -32,6 +37,7 @@ public class GroceryStoreApplication {
 		cartService.saveCart(cart);
 		//Fruits
 		productsService.saveProduct(new SupportedProducts("Fruit", "Apple"));
+		productsService.saveProduct(new SupportedProducts("Fruit", "Banana"));
 		productsService.saveProduct(new SupportedProducts("Fruit", "Orange"));
 		productsService.saveProduct(new SupportedProducts("Fruit", "Mango"));
 		productsService.saveProduct(new SupportedProducts("Fruit", "Papaya"));
@@ -42,6 +48,13 @@ public class GroceryStoreApplication {
 		productsService.saveProduct(new SupportedProducts("Vegetable", "Potato"));
 		productsService.saveProduct(new SupportedProducts("Vegetable", "Onion"));
 
+		itemService.saveItem(new Item("apple", "fruit", 0.50));
+		itemService.saveItem(new Item("banana", "fruit", 0.40));
+		itemService.saveItem(new Item("banana", "fruit", 0.40));
+		itemService.saveItem(new Item("potato", "vegetable", 0.26));
+		itemService.saveItem(new Item("tomato", "vegetable", 0.30));
+		itemService.saveItem(new Item("banana", "fruit", 0.40));
+		itemService.saveItem(new Item("potato", "vegetable", 0.26));
 
 
 	}

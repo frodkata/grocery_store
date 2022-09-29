@@ -56,6 +56,8 @@ public class UserPanelController {
             Item itemToAdd = itemService.getItemById(productId);
 
 
+
+
             itemToAdd.setCart(cart);
             cartService.saveCart(cart);
 
@@ -65,6 +67,7 @@ public class UserPanelController {
 
     }
 
+    //Total price with active promotion is calculated at checkout
     @GetMapping("/checkout")
     public ResponseEntity<String> checkout(){
         //Check if cart is empty before checkout
@@ -74,21 +77,16 @@ public class UserPanelController {
         }
 
 
-        Double totalPrice = 0.0;
-
 
         //Calculate total price based on cart, promo type and promo category
-        totalPrice = promotionService.calculatePriceByPromotion(
-                cartService.getCart(),
-                promotionService.getPromotion().getPromotionType(),
-                promotionService.getPromotion().getPromotedCategory());
+        double totalPrice = promotionService.calculatePriceByPromotion(cartService.getCart());
 
-
+/*
         //Remove bought items from repository
         for (Item i: cartService.getCart().getItems()) {
             itemService.deleteItemById(i.getId());
         }
-
+*/
 
         return  ResponseEntity.ok("Total price of products: " + totalPrice);
     }

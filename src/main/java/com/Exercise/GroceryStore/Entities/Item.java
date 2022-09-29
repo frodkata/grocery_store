@@ -38,6 +38,12 @@ public class Item {
     public Item() {
     }
 
+    public Item(@NotBlank(message = "Name is mandatory") String name, @NotBlank(message = "Type is mandatory") String type, Double itemPrice) {
+        this.name = name;
+        this.type = type;
+        this.itemPrice = itemPrice;
+    }
+
     public Item(Long id, @NotBlank(message = "Name is mandatory") String name, @NotBlank(message = "Type is mandatory") String type, Double itemPrice, Cart cart) {
         this.id = id;
         this.name = name;

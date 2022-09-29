@@ -2,6 +2,7 @@ package com.Exercise.GroceryStore.Controllers;
 
 import com.Exercise.GroceryStore.DTO.ItemDto;
 import com.Exercise.GroceryStore.DTO.ProductDto;
+import com.Exercise.GroceryStore.DTO.PromotionDto;
 import com.Exercise.GroceryStore.Entities.*;
 import com.Exercise.GroceryStore.Services.ItemService;
 import com.Exercise.GroceryStore.Services.PromotionService;
@@ -81,10 +82,33 @@ public class AdminPanelController {
             return ResponseEntity.ok("Item created!");
         }
 
+    //Create promotion on specific items
+    @PostMapping("/promotions/items")
+    public ResponseEntity<String> addPromotionByItems(@RequestBody PromotionDto promotionDto){
 
-    //Two-for-one promotion on a specific category
-    @PostMapping("/promotion")
-    public ResponseEntity<String> addPromotion(@RequestBody Promotion promotion){
+        //Check if item is supported
+        for (String itemName: promotionDto.getProductNames()) {
+            if(!productsService.isSupportedItem(itemName)){
+                return ResponseEntity.badRequest()
+                        .body("This item is not in the supported list!");
+            }
+        }
+
+        Promotion newPromotion = new Promotion();
+        List<String> promotedList = new ArrayList<>();
+        promotedList.addAll(promotionDto.getProductNames());
+        newPromotion.setPromotedItemNames(promotedList);
+        newPromotion.setPromotionType(promotionDto.getPromotionType());
+        newPromotion.setPromotedCategory("No category");
+
+        promotionService.savePromotion(newPromotion);
+
+        return ResponseEntity.ok("Promotion Created!");
+    }
+
+    //Create promotion on specific category
+    @PostMapping("/promotions/category")
+    public ResponseEntity<String> addPromotionByCategory(@RequestBody Promotion promotion){
 
         //Check if category is a supported one
         if(!productsService.isSupportedCategory(promotion.getPromotedCategory())){
@@ -98,8 +122,15 @@ public class AdminPanelController {
                     .body("Unsupported promotion type!");
         }
 
-        //Clear previous promotion and instantiate new one
-        promotionService.deleteAll();
+        //When promoting by category, only one promotion of given type and category can exist
+        //Check if other promotions exist
+        if(promotionService.getPromotionByType(promotion.getPromotionType()) != null){
+            return ResponseEntity.badRequest()
+                    .body("Promotion type " + promotion.getPromotionType() + " already exists!");
+        }else if(promotionService.getPromotionByCategory(promotion.getPromotedCategory()) != null){
+            return ResponseEntity.badRequest()
+                    .body("Promotion category " + promotion.getPromotedCategory() + " already exists!");
+        }
         Promotion newPromotion = new Promotion();
         newPromotion.setPromotedCategory(promotion.getPromotedCategory());
         newPromotion.setPromotionType(promotion.getPromotionType());
@@ -111,8 +142,23 @@ public class AdminPanelController {
     }
 
     @GetMapping("/promotion")
-    public ResponseEntity<Promotion> getPromotion(){
-        return ResponseEntity.ok(promotionService.getPromotion());
+    public ResponseEntity<List<Promotion>> getPromotion(){
+        return ResponseEntity.ok(promotionService.getAll());
+    }
+
+    @DeleteMapping("/promotion")
+    public  ResponseEntity<String> deletePromotion(@RequestBody String promotionType){
+       if(promotionService.getPromotionByType(promotionType) == null){
+           return ResponseEntity.badRequest()
+                   .body("Promotion doesn't exist!");
+       }
+
+        promotionService.deletePromotionById(
+               promotionService
+                       .getPromotionByType(promotionType)
+                       .getId());
+
+       return ResponseEntity.ok("Deleted promotion " + promotionType);
     }
 
     //Fetch all items that are currently listed

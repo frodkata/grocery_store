@@ -1,6 +1,9 @@
 package com.Exercise.GroceryStore.Entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "promotion")
@@ -14,6 +17,10 @@ public class Promotion {
 
     @Column(name = "type")
     private String promotionType;
+
+    @ElementCollection
+    @CollectionTable(name = "promotedItems")
+    private List<String> promotedItemNames;
 
     public Promotion() {
     }
@@ -45,5 +52,13 @@ public class Promotion {
 
     public void setPromotionType(String promotionType) {
         this.promotionType = promotionType;
+    }
+
+    public List<String> getPromotedItemNames() {
+        return promotedItemNames;
+    }
+
+    public void setPromotedItemNames(List<String> promotedItemNames) {
+        this.promotedItemNames = promotedItemNames;
     }
 }
