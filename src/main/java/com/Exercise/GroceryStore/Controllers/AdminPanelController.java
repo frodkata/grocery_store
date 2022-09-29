@@ -81,18 +81,6 @@ public class AdminPanelController {
             return ResponseEntity.ok("Item created!");
         }
 
-    //Fetch all items that are currently listed
-    @GetMapping("/inventory")
-    public ResponseEntity<List<Item>> getInventory( ) {
-        return ResponseEntity.ok(itemService.getAll());
-    }
-
-    //Fetch items based on category
-    @GetMapping("/inventory/{category}")
-    public ResponseEntity<List<Item>> getByCategory(@PathVariable(name = "category") String category) {
-        return ResponseEntity.ok(itemService.getByCategory(category));
-    }
-
 
     //Create promotion on specific items
     @PostMapping("/promotion")
