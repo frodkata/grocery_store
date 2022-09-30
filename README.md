@@ -1,6 +1,7 @@
 # Grocery Store API
 
 Grocery Store API built with Spring Boot   
+>To do: Tests
 ### "Business" Requirements
 
 
@@ -157,7 +158,7 @@ ex.response:
 Retrieves a list of the store's inventory
 
 ```http
-GET http://localhost:8080/api/admin/inventory
+GET http://localhost:8080/api/products
 ```
 
 ex.response:
@@ -175,6 +176,31 @@ ex.response:
         "itemPrice": 0.4
     },
 ```
+#### Get by category:
+Fetch items by their respective category passed as a path variable
+
+Ex.
+```http
+  GET http://localhost:8080/api/products/fruit
+```
+
+```json
+[
+{
+        "id": 1,
+        "name": "apple",
+        "type": "fruit",
+        "itemPrice": 0.5
+    },
+    {
+        "id": 2,
+        "name": "banana",
+        "type": "fruit",
+        "itemPrice": 0.4
+    }
+]
+```
+
 ### User functionality:
 Users can see the store's inventory, add items to cart and buy them. Active promotions are taken in consideration when calculating the final price.
 
@@ -183,7 +209,7 @@ Add item from inventory to cart via ID
 
 Ex.
 ```http
-  POST http://localhost:8080/api/user/cart
+  POST http://localhost:8080/api/cart
 ```
 
 ```json
@@ -197,7 +223,7 @@ Retrieves products currently for sale
 
 Ex.
 ```http
-  GET http://localhost:8080/api/user/products
+  GET http://localhost:8080/api/products
 ```
 
 ```json
@@ -216,13 +242,38 @@ Ex.
     },
 ]
 ```
+#### Get by category:
+Fetch items by their respective category passed as a path variable
+
+Ex.
+```http
+  GET http://localhost:8080/api/products/fruit
+```
+
+```json
+[
+{
+        "id": 1,
+        "name": "apple",
+        "type": "fruit",
+        "itemPrice": 0.5
+    },
+    {
+        "id": 2,
+        "name": "banana",
+        "type": "fruit",
+        "itemPrice": 0.4
+    }
+]
+```
+
 
 #### Get items from cart:
 Retrieves items currently in cart
 
 Ex.
 ```http
-  GET http://localhost:8080/api/user/cart
+  GET http://localhost:8080/api/cart
 ```
 
 ```json
@@ -273,14 +324,15 @@ Ex.
 ```
 
 
+
 #### Checkout:
 When checked-out, 'bought' products disappear from store's inventory. Final price is calculated upon consideration of active promotions:
 
 Ex.
 ```http
-  GET http://localhost:8080/api/user/checkout
+  GET http://localhost:8080/api/checkout
 ```
-With the items above + **2for1** and **buy1get1**, total price is:
+With the items above + **2for3** and **buy1get1**, total price is:
 
 ```json
 Total price of products: 1.99
