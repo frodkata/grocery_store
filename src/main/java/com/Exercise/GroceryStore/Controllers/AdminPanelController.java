@@ -107,7 +107,7 @@ public class AdminPanelController {
         }
 
 
-        promotionService.savePromotion(new Promotion("No Category", promotionDto.getPromotionType(), promotionDto.getProductNames()));
+        promotionService.savePromotion(new Promotion(promotionDto.getPromotionType(), promotionDto.getProductNames()));
 
         return ResponseEntity.ok("Promotion Created!");
     }

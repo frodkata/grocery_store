@@ -49,16 +49,6 @@ public class PromotionImpl implements PromotionService {
         promotionRepository.deleteAllInBatch();
     }
 
-    @Override
-    public Promotion getPromotionByCategory(String categoryName) {
-        for (Promotion p : promotionRepository.findAll()) {
-            if (p.getPromotedCategory().toUpperCase().equals(categoryName.toUpperCase())) {
-                return p;
-            }
-        }
-
-        return null;
-    }
 
     @Override
     public Promotion getPromotionByType(String promotionType) {

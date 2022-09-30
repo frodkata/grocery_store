@@ -12,9 +12,6 @@ public class Promotion {
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "category")
-    private String promotedCategory;
-
     @Column(name = "type")
     private String promotionType;
 
@@ -25,24 +22,15 @@ public class Promotion {
     public Promotion() {
     }
 
-    public Promotion(String promotedCategory, String promotionType) {
-        this.promotedCategory = promotedCategory;
+    public Promotion( String promotionType) {
         this.promotionType = promotionType;
     }
 
-    public Promotion(String promotedCategory, String promotionType, List<String> promotedItemNames) {
-        this.promotedCategory = promotedCategory;
+    public Promotion( String promotionType, List<String> promotedItemNames) {
         this.promotionType = promotionType;
         this.promotedItemNames = promotedItemNames;
     }
 
-    public String getPromotedCategory() {
-        return promotedCategory;
-    }
-
-    public void setPromotedCategory(String promotedCategory) {
-        this.promotedCategory = promotedCategory;
-    }
 
     public Long getId() {
         return id;

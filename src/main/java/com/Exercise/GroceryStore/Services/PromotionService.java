@@ -13,7 +13,6 @@ public interface PromotionService {
     Promotion getPromotionById(Long id);
     void deletePromotionById(Long id);
     void deleteAll();
-    Promotion getPromotionByCategory(String categoryName);
     Promotion getPromotionByType(String promotionType);
     Boolean checkIfItemIsPromoted(String promotedItem, String promotionType);
     double calculatePriceByPromotion(Cart cart);
